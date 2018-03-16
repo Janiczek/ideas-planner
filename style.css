@@ -13,6 +13,10 @@ body {
   flex: 1;
 }
 
+.dragging * {
+  user-select: none;
+}
+
 .ideas-column {
   display: flex;
   flex-direction: column;

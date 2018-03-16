@@ -8,7 +8,7 @@ import Types exposing (..)
 
 
 ideas : Model -> Html Msg
-ideas { ideas, newIdeaInput } =
+ideas { ideas, newIdeaInput, currentlyHoveredDate, dragState } =
     H.div
         [ HA.class "ideas-column" ]
         [ H.div
@@ -22,28 +22,42 @@ ideas { ideas, newIdeaInput } =
                 , HA.class "new-idea"
                 ]
                 []
-            , H.button
-                [ HE.onClick AddNewIdea
-                , HA.class "add-new-idea"
-                ]
-                [ H.text "Add" ]
+            , addNewIdeaButton
             ]
         , H.div
             [ HA.class "ideas" ]
             (ideas |> List.indexedMap idea)
+        , currentlyHoveredDate |> toString |> H.text |> List.singleton |> H.div []
+        , dragState |> toString |> H.text |> List.singleton |> H.div []
         ]
+
+
+addNewIdeaButton : Html Msg
+addNewIdeaButton =
+    H.button
+        [ HE.onClick AddNewIdea
+        , HA.class "add-new-idea"
+        ]
+        [ H.text "Add" ]
 
 
 idea : Int -> Idea -> Html Msg
 idea index ideaContent =
     H.div
-        [ HA.class "idea" ]
+        [ HA.class "idea"
+        , HE.onMouseDown (DragIdea ideaContent)
+        ]
         [ H.div
             [ HA.class "idea-content" ]
             [ H.text ideaContent ]
-        , H.button
-            [ HA.class "remove-idea"
-            , HE.onClick (RemoveIdea index)
-            ]
-            [ H.text "X" ]
+        , removeIdeaButton index
         ]
+
+
+removeIdeaButton : Int -> Html Msg
+removeIdeaButton index =
+    H.button
+        [ HA.class "remove-idea"
+        , HE.onClick (RemoveIdea index)
+        ]
+        [ H.text "X" ]

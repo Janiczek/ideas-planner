@@ -3,12 +3,13 @@ module View.Calendar exposing (calendar)
 import Calendar
 import Html as H exposing (Html)
 import Html.Attributes as HA
+import Html.Events as HE
 import Time.Date as D exposing (Date, Weekday(Sat, Sun))
 import Types exposing (..)
 
 
 calendar : Model -> Html Msg
-calendar { plans, currentDate } =
+calendar { plans, currentDate, dragState } =
     H.div
         [ HA.class "calendar" ]
         [ calendarHeader
@@ -17,7 +18,7 @@ calendar { plans, currentDate } =
             (currentDate
                 |> Calendar.currentDates
                 |> Calendar.withPlans plans
-                |> List.map (day currentDate)
+                |> List.map (day currentDate dragState)
             )
         ]
 
@@ -48,17 +49,20 @@ dayHeader day =
         [ H.text day ]
 
 
-day : Date -> Day -> Html Msg
-day today day =
+day : Date -> DragState -> Day -> Html Msg
+day today dragState day =
     H.div
-        [ HA.classList
+        ([ HA.classList
             [ ( "day", True )
             , ( "today", today == day.date )
             , ( "past", D.compare day.date today == LT )
             , ( "weekend", List.member (D.weekday day.date) [ Sat, Sun ] )
             , ( "no-plan", day.plan == Nothing )
             ]
-        ]
+         ]
+            ++ enableDragPlan day
+            ++ enableDragEnd day dragState
+        )
         [ H.div
             [ HA.class "date" ]
             [ H.text <|
@@ -73,4 +77,24 @@ day today day =
                 |> Maybe.withDefault "no plan"
                 |> H.text
             ]
+        ]
+
+
+enableDragPlan : Day -> List (H.Attribute Msg)
+enableDragPlan day =
+    day.plan
+        |> Maybe.map
+            (\plan ->
+                [ HE.onMouseDown (DragPlan ( day.date, plan )) ]
+            )
+        |> Maybe.withDefault []
+
+
+enableDragEnd : Day -> DragState -> List (H.Attribute Msg)
+enableDragEnd day dragState =
+    if dragState == NoDrag then
+        []
+    else
+        [ HE.onMouseOver (DragOverDay day.date)
+        , HE.onMouseOut DragLeaveDay
         ]

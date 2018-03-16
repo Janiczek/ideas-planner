@@ -52,6 +52,8 @@ init { currentDate, savedData } =
       , newIdeaInput = ""
       , plans = plansDict
       , currentDate = D.fromTuple currentDate
+      , currentlyHoveredDate = Nothing
+      , dragState = NoDrag
       }
     , Cmd.none
     )
@@ -83,6 +85,78 @@ update msg model =
                         |> List.filter (\( i, idea ) -> i /= index)
                         |> List.map (\( i, idea ) -> idea)
             }
+                |> save_
+
+        DragIdea idea ->
+            ( { model
+                | dragState = DraggingIdea idea
+                , currentlyHoveredDate = Nothing
+              }
+            , Cmd.none
+            )
+
+        DragPlan ( date, plan ) ->
+            ( { model
+                | dragState = DraggingPlan ( date, plan )
+                , currentlyHoveredDate = Just date
+              }
+            , Cmd.none
+            )
+
+        DragOverDay newCurrentDate ->
+            ( { model | currentlyHoveredDate = Just newCurrentDate }
+            , Cmd.none
+            )
+
+        DragLeaveDay ->
+            ( { model | currentlyHoveredDate = Nothing }
+            , Cmd.none
+            )
+
+        StopDrag ->
+            let
+                modelWithoutDrag =
+                    { model
+                        | currentlyHoveredDate = Nothing
+                        , dragState = NoDrag
+                    }
+            in
+            (case model.dragState of
+                DraggingIdea idea ->
+                    model.currentlyHoveredDate
+                        |> Maybe.map
+                            (\date ->
+                                { modelWithoutDrag
+                                    | plans =
+                                        modelWithoutDrag.plans
+                                            |> Dict.insert (D.toTuple date) idea
+                                }
+                            )
+                        |> Maybe.withDefault modelWithoutDrag
+
+                DraggingPlan ( oldDate, plan ) ->
+                    let
+                        modelWithoutDraggedPlan =
+                            { modelWithoutDrag
+                                | plans =
+                                    modelWithoutDrag.plans
+                                        |> Dict.remove (D.toTuple oldDate)
+                            }
+                    in
+                    model.currentlyHoveredDate
+                        |> Maybe.map
+                            (\date ->
+                                { modelWithoutDraggedPlan
+                                    | plans =
+                                        modelWithoutDraggedPlan.plans
+                                            |> Dict.insert (D.toTuple date) plan
+                                }
+                            )
+                        |> Maybe.withDefault modelWithoutDraggedPlan
+
+                NoDrag ->
+                    modelWithoutDrag
+            )
                 |> save_
 
 

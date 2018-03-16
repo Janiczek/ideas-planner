@@ -21,6 +21,8 @@ type alias Model =
     , ideas : List Idea
     , newIdeaInput : String
     , plans : Dict DateTuple Plan
+    , dragState : DragState
+    , currentlyHoveredDate : Maybe Date
     }
 
 
@@ -28,6 +30,12 @@ type alias PersistentData =
     { ideas : List Idea
     , plans : List ( DateTuple, Plan )
     }
+
+
+type DragState
+    = NoDrag
+    | DraggingIdea Idea
+    | DraggingPlan ( Date, Plan )
 
 
 type alias Day =
@@ -56,3 +64,8 @@ type Msg
     = SetNewIdeaInput String
     | AddNewIdea
     | RemoveIdea Int
+    | DragIdea Idea
+    | DragPlan ( Date, Plan )
+    | DragOverDay Date
+    | DragLeaveDay
+    | StopDrag
