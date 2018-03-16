@@ -83,6 +83,7 @@ day today day =
             [ ( "day", True )
             , ( "today", today == day.date )
             , ( "past", D.compare day.date today == LT )
+            , ( "no-plan", day.plan == Nothing )
             ]
         ]
         [ H.div

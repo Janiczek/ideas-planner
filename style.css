@@ -6,30 +6,36 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
 
 }
 .app {
   display: flex;
-  justify-content: center;
+  flex: 1;
 }
 
 .ideas-column {
   display: flex;
   flex-direction: column;
+  padding: 1rem;
+  background: #f0f0f0;
+  border-right: 0.25rem solid #e8e8e8;
 }
 
 .inputs {
 }
 
 input.new-idea {
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 button.add-new-idea {
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 button.remove-idea {
+  font-size: 1rem;
 }
 
 .ideas {
@@ -44,18 +50,22 @@ button.remove-idea {
   flex-direction: row;
   justify-content: space-between;
   padding: 0.5rem;
-  background: #f0f0f0;
+  background: #ffffff;
   border: 0.0625rem solid #d4d4d4;
+  box-shadow: 0 0.125rem 0.125rem #d4d4d4;
+  border-radius: 0.125rem;
 }
 
 .calendar {
-  padding-left: 2rem;
-  align-self: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
 }
 
 .calendar-header {
   display: grid;
-  grid-template-columns: repeat(7, 6rem);
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .day-header {
@@ -67,14 +77,19 @@ button.remove-idea {
 
 .days {
   display: grid;
-  grid-template-columns: repeat(7, 6rem);
-  grid-auto-rows: 5rem;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
+  flex: 1;
 }
 
 .day {
   padding: 0.5rem;
   background: #fafafa;
   border: 0.0625rem solid #d4d4d4;
+}
+
+.day.no-plan .plan {
+  color: #888888;
 }
 
 .day.past {
