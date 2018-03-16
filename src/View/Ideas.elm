@@ -56,6 +56,11 @@ idea index ideaContent =
         ]
 
 
+px : Int -> String
+px amount =
+    toString amount ++ "px"
+
+
 draggedIdea : Model -> Html Msg
 draggedIdea { dragState, mouse } =
     let
@@ -64,8 +69,8 @@ draggedIdea { dragState, mouse } =
             H.div
                 [ HA.class "idea dragged"
                 , HA.style
-                    [ ( "left", toString mouse.x ++ "px" )
-                    , ( "top", toString mouse.y ++ "px" )
+                    [ ( "left", px mouse.x )
+                    , ( "top", px mouse.y )
                     ]
                 ]
                 [ H.div
