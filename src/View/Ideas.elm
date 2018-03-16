@@ -1,5 +1,7 @@
 module View.Ideas exposing (draggedIdea, ideas)
 
+import Dict exposing (Dict)
+import Dict.Extra as Dict
 import Html as H exposing (Html)
 import Html.Attributes as HA
 import Html.Events as HE
@@ -9,7 +11,7 @@ import View.Debug as View
 
 
 ideas : Model -> Html Msg
-ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState } as model) =
+ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState, plans } as model) =
     H.div
         [ HA.class "ideas-column" ]
         [ H.div [ HA.class "ideas-wrapper" ]
@@ -28,7 +30,7 @@ ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState } as model) =
                 ]
             , H.div
                 [ HA.class "ideas" ]
-                (ideas |> List.indexedMap idea)
+                (ideas |> List.indexedMap (idea plans))
             ]
         , View.debug model
         ]
@@ -43,17 +45,55 @@ addNewIdeaButton =
         [ H.text "Add" ]
 
 
-idea : Int -> Idea -> Html Msg
-idea index ideaContent =
+idea : Dict DateTuple Idea -> Int -> Idea -> Html Msg
+idea plans index idea =
     H.div
         [ HA.class "idea"
-        , HE.onMouseDown (DragIdea ideaContent)
+        , HE.onMouseDown (DragIdea idea)
         ]
         [ H.div
             [ HA.class "idea-content" ]
-            [ H.text ideaContent ]
+            [ H.div [ HA.class "idea-text" ] [ H.text idea ]
+            , H.div
+                [ HA.class "idea-frequency"
+                , HA.title "The dots mean: How much do you neglect this idea?"
+                ]
+                [ frequency plans idea ]
+            ]
         , removeIdeaButton index
         ]
+
+
+frequency : Dict DateTuple Idea -> Idea -> Html Msg
+frequency plans idea =
+    let
+        frequencies : Dict Idea Int
+        frequencies =
+            plans
+                |> Dict.toList
+                |> List.map Tuple.second
+                |> Dict.frequencies
+
+        biggestFrequency : Int
+        biggestFrequency =
+            frequencies
+                |> Dict.foldl
+                    (\idea frequency maxSoFar -> max maxSoFar frequency)
+                    0
+
+        thisFrequency : Int
+        thisFrequency =
+            frequencies
+                |> Dict.get idea
+                |> Maybe.withDefault 0
+
+        difference : Int
+        difference =
+            biggestFrequency - thisFrequency
+    in
+    "•"
+        |> String.repeat difference
+        |> H.text
 
 
 px : Int -> String
@@ -69,8 +109,8 @@ draggedIdea { dragState, mouse } =
             H.div
                 [ HA.class "idea dragged"
                 , HA.style
-                    [ ( "left", px mouse.x )
-                    , ( "top", px mouse.y )
+                    [ ( "left", px (mouse.x + 20) )
+                    , ( "top", px (mouse.y + 20) )
                     ]
                 ]
                 [ H.div
