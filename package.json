@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "elm-make src/Main.elm --warn --output elm.js",
+    "serve": "elm-live src/Main.elm --warn --output elm.js --open"
+  }
+}

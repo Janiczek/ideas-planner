@@ -1,0 +1,78 @@
+body {
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.app {
+  display: flex;
+  justify-content: center;
+}
+
+.ideas-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputs {
+}
+
+input.new-idea {
+}
+
+button.add-new-idea {
+}
+
+button.remove-idea {
+}
+
+.ideas {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.idea {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border: 0.0625rem solid #d4d4d4;
+}
+
+.calendar {
+  display: grid;
+  align-self: center;
+  padding-left: 2rem;
+  grid-template-columns: repeat(7, 6rem);
+  grid-auto-rows: 5rem;
+}
+
+.day {
+  padding: 0.5rem;
+  background: #fafafa;
+  border: 0.0625rem solid #d4d4d4;
+}
+
+.day.past {
+  background: #f0f0f0;
+  color: #888888;
+}
+
+.day.today {
+  border-color: #f7a270;
+  background: #ffe1be;
+}
+
+.date {
+}
+
+.plan {
+}
