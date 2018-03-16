@@ -1,12 +1,6 @@
-module Date.Extra exposing (daysFromMonday, fromRecord, range)
+module Date.Extra exposing (daysFromMonday, range)
 
 import Time.Date as D exposing (Date, Weekday(..))
-import Types exposing (..)
-
-
-fromRecord : DateRecord -> Date
-fromRecord { year, month, day } =
-    D.date year month day
 
 
 range : Date -> Date -> List Date

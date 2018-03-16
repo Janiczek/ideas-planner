@@ -1,14 +1,27 @@
-module Main exposing (main)
+port module Main exposing (main)
 
-import Calendar
-import Date.Extra as Date
+import Dict
 import Html as H
+import PersistentData
+import Time.Date as D
 import Types exposing (..)
 import View exposing (view)
 
 
 -- TODO show lines: how many times each idea has been done? (or, mostDone - thisDone)
 -- TODO color of an idea
+
+
+port save : PersistentData -> Cmd msg
+
+
+save_ : Model -> ( Model, Cmd msg )
+save_ model =
+    ( model
+    , model
+        |> PersistentData.fromModel
+        |> save
+    )
 
 
 main : Program Flags Model Msg
@@ -22,11 +35,23 @@ main =
 
 
 init : Flags -> ( Model, Cmd Msg )
-init { currentDate } =
-    ( { ideas = []
+init { currentDate, savedData } =
+    let
+        { ideas, plans } =
+            savedData
+                |> Maybe.withDefault
+                    { ideas = []
+                    , plans = []
+                    }
+
+        plansDict =
+            plans
+                |> Dict.fromList
+    in
+    ( { ideas = ideas
       , newIdeaInput = ""
-      , calendar = Calendar.init currentDate
-      , currentDate = Date.fromRecord currentDate
+      , plans = plansDict
+      , currentDate = D.fromTuple currentDate
       }
     , Cmd.none
     )
@@ -41,26 +66,24 @@ update msg model =
             )
 
         AddNewIdea ->
-            ( if String.isEmpty model.newIdeaInput then
-                model
-              else
+            if String.isEmpty model.newIdeaInput then
+                ( model, Cmd.none )
+            else
                 { model
                     | ideas = model.newIdeaInput :: model.ideas
                     , newIdeaInput = ""
                 }
-            , Cmd.none
-            )
+                    |> save_
 
         RemoveIdea index ->
-            ( { model
+            { model
                 | ideas =
                     model.ideas
                         |> List.indexedMap (,)
                         |> List.filter (\( i, idea ) -> i /= index)
                         |> List.map (\( i, idea ) -> idea)
-              }
-            , Cmd.none
-            )
+            }
+                |> save_
 
 
 subscriptions : Model -> Sub Msg

@@ -1,5 +1,6 @@
 module View.Calendar exposing (calendar)
 
+import Calendar
 import Html as H exposing (Html)
 import Html.Attributes as HA
 import Time.Date as D exposing (Date)
@@ -7,13 +8,17 @@ import Types exposing (..)
 
 
 calendar : Model -> Html Msg
-calendar { calendar, currentDate } =
+calendar { plans, currentDate } =
     H.div
         [ HA.class "calendar" ]
         [ calendarHeader
         , H.div
             [ HA.class "days" ]
-            (calendar |> List.map (day currentDate))
+            (currentDate
+                |> Calendar.currentDates
+                |> Calendar.withPlans plans
+                |> List.map (day currentDate)
+            )
         ]
 
 

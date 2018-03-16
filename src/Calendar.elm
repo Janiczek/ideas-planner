@@ -1,41 +1,43 @@
-module Calendar exposing (init)
+module Calendar exposing (currentDates, withPlans)
 
 import Date.Extra as Date
-import Time.Date as D
+import Dict exposing (Dict)
+import Time.Date as D exposing (Date)
 import Types exposing (..)
 
 
-init : DateRecord -> Calendar
-init d =
-    -- four weeks from now
+{-| Return dates from one week before last Monday
+to four weeks from now (ending Friday)
+-}
+currentDates : Date -> List Date
+currentDates currentDate =
     let
-        date =
-            D.date d.year d.month d.day
-
         weekday =
-            D.weekday date
+            D.weekday currentDate
 
         subtractDays =
             Date.daysFromMonday weekday
 
         lastMonday =
-            date |> D.addDays -subtractDays
+            currentDate |> D.addDays -subtractDays
 
         weekBeforeLastMonday =
             lastMonday |> D.addDays -7
 
         sundayFourWeeksFromLastMonday =
             lastMonday |> D.addDays (7 * 4 - 1)
-
-        calendarDates =
-            Date.range
-                weekBeforeLastMonday
-                sundayFourWeeksFromLastMonday
     in
-    calendarDates
+    Date.range
+        weekBeforeLastMonday
+        sundayFourWeeksFromLastMonday
+
+
+withPlans : Dict DateTuple Plan -> List Date -> List Day
+withPlans plans dates =
+    dates
         |> List.map
             (\date ->
                 { date = date
-                , plan = Nothing
+                , plan = Dict.get (D.toTuple date) plans
                 }
             )

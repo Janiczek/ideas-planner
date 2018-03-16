@@ -1,17 +1,18 @@
 module Types exposing (..)
 
+import Dict exposing (Dict)
 import Time.Date as D exposing (Date, Weekday(..))
 
 
-type alias DateRecord =
-    { day : Int
-    , month : Int
-    , year : Int
-    }
+{-| (Year, Month, Day)
+-}
+type alias DateTuple =
+    ( Int, Int, Int )
 
 
 type alias Flags =
-    { currentDate : DateRecord
+    { savedData : Maybe PersistentData
+    , currentDate : DateTuple
     }
 
 
@@ -19,7 +20,13 @@ type alias Model =
     { currentDate : Date
     , ideas : List Idea
     , newIdeaInput : String
-    , calendar : Calendar
+    , plans : Dict DateTuple Plan
+    }
+
+
+type alias PersistentData =
+    { ideas : List Idea
+    , plans : List ( DateTuple, Plan )
     }
 
 
