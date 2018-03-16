@@ -19,14 +19,19 @@ body {
   padding: 1rem;
   background: #f0f0f0;
   border-right: 0.25rem solid #e8e8e8;
+  width: 20rem;
 }
 
 .inputs {
+  display: flex;
 }
 
 input.new-idea {
   padding: 0.5rem;
   font-size: 1rem;
+  flex: 1;
+  border: 0.0625rem solid #f8b087;
+  background: #fff5eb;
 }
 
 button.add-new-idea {
@@ -40,9 +45,8 @@ button.remove-idea {
 
 .ideas {
   display: grid;
-  grid-template-columns: 14.5rem;
-  grid-gap: 0.5rem;
-  margin-top: 0.5rem;
+  grid-gap: 1rem;
+  margin-top: 1rem;
 }
 
 .idea {
@@ -80,12 +84,15 @@ button.remove-idea {
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 1fr;
   flex: 1;
+  border-top: 0.0625rem solid #d4d4d4;
+  border-left: 0.0625rem solid #d4d4d4;
 }
 
 .day {
   padding: 0.5rem;
   background: #fafafa;
-  border: 0.0625rem solid #d4d4d4;
+  border-right: 0.0625rem solid #d4d4d4;
+  border-bottom: 0.0625rem solid #d4d4d4;
 }
 
 .day.no-plan .plan {
@@ -98,8 +105,8 @@ button.remove-idea {
 }
 
 .day.today {
-  border-color: #f7a270;
-  background: #ffe1be;
+  border-color: #fbd0b7;
+  background: #fff5eb;
 }
 
 .date {
