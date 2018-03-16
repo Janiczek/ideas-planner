@@ -113,18 +113,23 @@ button.remove-idea {
   color: #888888;
 }
 
+.day:not(.no-plan) {
+  background: #d1ff82;
+}
+
 .day.past {
-  background: #f0f0f0;
   color: #888888;
+  background: #ecffcc;
+}
+
+.day.past.no-plan {
+  background: #f0f0f0;
 }
 
 .day.today {
   border-color: #fbd0b7;
   background: #fff5eb;
-}
-
-.day.weekend {
-  opacity: 0.55;
+  font-weight: bold;
 }
 
 .date {

@@ -51,12 +51,15 @@ dayHeader day =
 
 day : Date -> DragState -> Day -> Html Msg
 day today dragState day =
+    let
+        isToday =
+            today == day.date
+    in
     H.div
         ([ HA.classList
             [ ( "day", True )
-            , ( "today", today == day.date )
+            , ( "today", isToday )
             , ( "past", D.compare day.date today == LT )
-            , ( "weekend", List.member (D.weekday day.date) [ Sat, Sun ] )
             , ( "no-plan", day.idea == Nothing )
             ]
          ]
@@ -70,6 +73,11 @@ day today dragState day =
                     ++ ". "
                     ++ (D.month day.date |> toString)
                     ++ "."
+                    ++ (if isToday then
+                            " - today"
+                        else
+                            ""
+                       )
             ]
         , H.div
             [ HA.class "plan" ]
