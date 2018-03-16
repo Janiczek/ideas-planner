@@ -1,14 +1,15 @@
-module View.Ideas exposing (ideas)
+module View.Ideas exposing (draggedIdea, ideas)
 
 import Html as H exposing (Html)
 import Html.Attributes as HA
 import Html.Events as HE
 import Html.Events.Extra as HE
 import Types exposing (..)
+import View.Debug as View
 
 
 ideas : Model -> Html Msg
-ideas { ideas, newIdeaInput, currentlyHoveredDate, dragState } =
+ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState } as model) =
     H.div
         [ HA.class "ideas-column" ]
         [ H.div
@@ -27,8 +28,7 @@ ideas { ideas, newIdeaInput, currentlyHoveredDate, dragState } =
         , H.div
             [ HA.class "ideas" ]
             (ideas |> List.indexedMap idea)
-        , currentlyHoveredDate |> toString |> H.text |> List.singleton |> H.div []
-        , dragState |> toString |> H.text |> List.singleton |> H.div []
+        , View.debug model
         ]
 
 
@@ -52,6 +52,34 @@ idea index ideaContent =
             [ H.text ideaContent ]
         , removeIdeaButton index
         ]
+
+
+draggedIdea : Model -> Html Msg
+draggedIdea { dragState, mouse } =
+    let
+        view : Idea -> Html Msg
+        view idea =
+            H.div
+                [ HA.class "idea dragged"
+                , HA.style
+                    [ ( "left", toString (mouse.x + 10) ++ "px" )
+                    , ( "top", toString (mouse.y + 10) ++ "px" )
+                    ]
+                ]
+                [ H.div
+                    [ HA.class "idea-content" ]
+                    [ H.text idea ]
+                ]
+    in
+    case dragState of
+        NoDrag ->
+            H.text ""
+
+        DraggingIdea idea ->
+            view idea
+
+        DraggingPlan ( date, idea ) ->
+            view idea
 
 
 removeIdeaButton : Int -> Html Msg

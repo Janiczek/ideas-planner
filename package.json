@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "build": "elm-make src/Main.elm --warn --output elm.js",
-    "serve": "elm-live src/Main.elm --warn --output elm.js --open"
+    "build":         "elm-make src/Main.elm --warn --output elm.js --debug",
+    "build-nodebug": "elm-make src/Main.elm --warn --output elm.js",
+    "serve":         "elm-live src/Main.elm --warn --output elm.js --open --debug",
+    "serve-nodebug": "elm-live src/Main.elm --warn --output elm.js --open"
   }
 }

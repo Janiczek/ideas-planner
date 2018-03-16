@@ -65,6 +65,10 @@ button.remove-idea {
   border-radius: 0.125rem;
 }
 
+.idea.dragged {
+  position: absolute;
+}
+
 .calendar {
   display: flex;
   flex-direction: column;
@@ -122,4 +126,17 @@ button.remove-idea {
 }
 
 .plan {
+}
+
+.debug {
+  display: grid;
+  grid-gap: 1rem;
+  padding-top: 1rem;
+}
+
+.debug-item {
+}
+
+.debug-label {
+  font-weight: bold;
 }

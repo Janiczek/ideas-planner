@@ -57,7 +57,7 @@ day today dragState day =
             , ( "today", today == day.date )
             , ( "past", D.compare day.date today == LT )
             , ( "weekend", List.member (D.weekday day.date) [ Sat, Sun ] )
-            , ( "no-plan", day.plan == Nothing )
+            , ( "no-plan", day.idea == Nothing )
             ]
          ]
             ++ enableDragPlan day
@@ -73,7 +73,7 @@ day today dragState day =
             ]
         , H.div
             [ HA.class "plan" ]
-            [ day.plan
+            [ day.idea
                 |> Maybe.withDefault "no plan"
                 |> H.text
             ]
@@ -82,10 +82,10 @@ day today dragState day =
 
 enableDragPlan : Day -> List (H.Attribute Msg)
 enableDragPlan day =
-    day.plan
+    day.idea
         |> Maybe.map
-            (\plan ->
-                [ HE.onMouseDown (DragPlan ( day.date, plan )) ]
+            (\idea ->
+                [ HE.onMouseDown (DragPlan ( day.date, idea )) ]
             )
         |> Maybe.withDefault []
 

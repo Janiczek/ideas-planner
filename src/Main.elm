@@ -2,6 +2,7 @@ port module Main exposing (main)
 
 import Dict
 import Html as H
+import Mouse
 import PersistentData
 import Time.Date as D
 import Types exposing (..)
@@ -54,6 +55,7 @@ init { currentDate, savedData } =
       , currentDate = D.fromTuple currentDate
       , currentlyHoveredDate = Nothing
       , dragState = NoDrag
+      , mouse = { x = 0, y = 0 }
       }
     , Cmd.none
     )
@@ -159,7 +161,12 @@ update msg model =
             )
                 |> save_
 
+        MouseMoved position ->
+            ( { model | mouse = position }
+            , Cmd.none
+            )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Mouse.moves MouseMoved

@@ -20,6 +20,7 @@ view model =
         )
         [ View.ideas model
         , View.calendar model
+        , View.draggedIdea model
         ]
 
 

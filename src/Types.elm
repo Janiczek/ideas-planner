@@ -1,6 +1,7 @@
 module Types exposing (..)
 
 import Dict exposing (Dict)
+import Mouse exposing (Position)
 import Time.Date as D exposing (Date, Weekday(..))
 
 
@@ -20,27 +21,28 @@ type alias Model =
     { currentDate : Date
     , ideas : List Idea
     , newIdeaInput : String
-    , plans : Dict DateTuple Plan
+    , plans : Dict DateTuple Idea
     , dragState : DragState
     , currentlyHoveredDate : Maybe Date
+    , mouse : Position
     }
 
 
 type alias PersistentData =
     { ideas : List Idea
-    , plans : List ( DateTuple, Plan )
+    , plans : List ( DateTuple, Idea )
     }
 
 
 type DragState
     = NoDrag
     | DraggingIdea Idea
-    | DraggingPlan ( Date, Plan )
+    | DraggingPlan ( Date, Idea )
 
 
 type alias Day =
     { date : Date
-    , plan : Maybe Plan
+    , idea : Maybe Idea
     }
 
 
@@ -56,16 +58,13 @@ type alias Idea =
     String
 
 
-type alias Plan =
-    Idea
-
-
 type Msg
     = SetNewIdeaInput String
     | AddNewIdea
     | RemoveIdea Int
     | DragIdea Idea
-    | DragPlan ( Date, Plan )
+    | DragPlan ( Date, Idea )
     | DragOverDay Date
     | DragLeaveDay
     | StopDrag
+    | MouseMoved Position
