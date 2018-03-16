@@ -12,22 +12,24 @@ ideas : Model -> Html Msg
 ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState } as model) =
     H.div
         [ HA.class "ideas-column" ]
-        [ H.div
-            [ HA.class "inputs" ]
-            [ H.input
-                [ HA.type_ "text"
-                , HE.onInput SetNewIdeaInput
-                , HE.onEnter AddNewIdea
-                , HA.value newIdeaInput
-                , HA.placeholder "New idea..."
-                , HA.class "new-idea"
+        [ H.div [ HA.class "ideas-wrapper" ]
+            [ H.div
+                [ HA.class "inputs" ]
+                [ H.input
+                    [ HA.type_ "text"
+                    , HE.onInput SetNewIdeaInput
+                    , HE.onEnter AddNewIdea
+                    , HA.value newIdeaInput
+                    , HA.placeholder "New idea..."
+                    , HA.class "new-idea"
+                    ]
+                    []
+                , addNewIdeaButton
                 ]
-                []
-            , addNewIdeaButton
+            , H.div
+                [ HA.class "ideas" ]
+                (ideas |> List.indexedMap idea)
             ]
-        , H.div
-            [ HA.class "ideas" ]
-            (ideas |> List.indexedMap idea)
         , View.debug model
         ]
 

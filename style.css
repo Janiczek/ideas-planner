@@ -20,10 +20,15 @@ body {
 .ideas-column {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 1rem;
   background: #f0f0f0;
   border-right: 0.25rem solid #e8e8e8;
   width: 20rem;
+}
+
+.ideas-wrapper {
+  flex: 1;
 }
 
 .inputs {
