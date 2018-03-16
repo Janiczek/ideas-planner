@@ -1,5 +1,6 @@
 body {
   font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   padding: 0;
   margin: 0;
   width: 100vw;
@@ -33,7 +34,7 @@ button.remove-idea {
 
 .ideas {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 14.5rem;
   grid-gap: 0.5rem;
   margin-top: 0.5rem;
 }
@@ -48,9 +49,24 @@ button.remove-idea {
 }
 
 .calendar {
-  display: grid;
-  align-self: center;
   padding-left: 2rem;
+  align-self: center;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 6rem);
+}
+
+.day-header {
+  padding: 0.5rem;
+  text-transform: uppercase;
+  color: #888888;
+  font-size: 0.75rem;
+}
+
+.days {
+  display: grid;
   grid-template-columns: repeat(7, 6rem);
   grid-auto-rows: 5rem;
 }

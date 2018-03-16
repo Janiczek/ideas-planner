@@ -62,7 +62,18 @@ idea index ideaContent =
 calendar : Model -> Html Msg
 calendar { calendar, currentDate } =
     H.div [ HA.class "calendar" ]
-        (calendar |> List.map (day currentDate))
+        [ H.div [ HA.class "calendar-header" ]
+            [ H.div [ HA.class "day-header" ] [ H.text "Mon" ]
+            , H.div [ HA.class "day-header" ] [ H.text "Tue" ]
+            , H.div [ HA.class "day-header" ] [ H.text "Wed" ]
+            , H.div [ HA.class "day-header" ] [ H.text "Thu" ]
+            , H.div [ HA.class "day-header" ] [ H.text "Fri" ]
+            , H.div [ HA.class "day-header" ] [ H.text "Sat" ]
+            , H.div [ HA.class "day-header" ] [ H.text "Sun" ]
+            ]
+        , H.div [ HA.class "days" ]
+            (calendar |> List.map (day currentDate))
+        ]
 
 
 day : Date -> Day -> Html Msg
