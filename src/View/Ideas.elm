@@ -64,8 +64,8 @@ draggedIdea { dragState, mouse } =
             H.div
                 [ HA.class "idea dragged"
                 , HA.style
-                    [ ( "left", toString (mouse.x + 10) ++ "px" )
-                    , ( "top", toString (mouse.y + 10) ++ "px" )
+                    [ ( "left", toString mouse.x ++ "px" )
+                    , ( "top", toString mouse.y ++ "px" )
                     ]
                 ]
                 [ H.div

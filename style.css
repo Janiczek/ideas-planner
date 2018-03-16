@@ -72,6 +72,8 @@ button.remove-idea {
 
 .idea.dragged {
   position: absolute;
+  pointer-events: none;
+  z-index: 11;
 }
 
 .calendar {
@@ -107,10 +109,19 @@ button.remove-idea {
   background: #fafafa;
   border-right: 0.0625rem solid #d4d4d4;
   border-bottom: 0.0625rem solid #d4d4d4;
+
+  box-shadow: 0 0 0 #cccccc;
+
+  transition: box-shadow 0.25s;
 }
 
 .day.no-plan .plan {
   color: #888888;
+}
+
+.day:hover {
+  box-shadow: 0 0.0625rem 0.5rem #cccccc;
+  z-index: 10;
 }
 
 .day:not(.no-plan) {
