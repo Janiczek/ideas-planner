@@ -4,8 +4,8 @@ import Html as H exposing (Html)
 import Html.Attributes as HA
 import Html.Events as HE
 import Html.Events.Extra as HE
-import Time.Date as D exposing (Date)
 import Types exposing (..)
+import View.Calendar as View
 
 
 view : Model -> Html Msg
@@ -13,7 +13,7 @@ view model =
     H.div
         [ HA.class "app" ]
         [ ideas model
-        , calendar model
+        , View.calendar model
         ]
 
 
@@ -56,45 +56,6 @@ idea index ideaContent =
             , HE.onClick (RemoveIdea index)
             ]
             [ H.text "X" ]
-        ]
-
-
-calendar : Model -> Html Msg
-calendar { calendar, currentDate } =
-    H.div [ HA.class "calendar" ]
-        [ H.div [ HA.class "calendar-header" ]
-            [ H.div [ HA.class "day-header" ] [ H.text "Mon" ]
-            , H.div [ HA.class "day-header" ] [ H.text "Tue" ]
-            , H.div [ HA.class "day-header" ] [ H.text "Wed" ]
-            , H.div [ HA.class "day-header" ] [ H.text "Thu" ]
-            , H.div [ HA.class "day-header" ] [ H.text "Fri" ]
-            , H.div [ HA.class "day-header" ] [ H.text "Sat" ]
-            , H.div [ HA.class "day-header" ] [ H.text "Sun" ]
-            ]
-        , H.div [ HA.class "days" ]
-            (calendar |> List.map (day currentDate))
-        ]
-
-
-day : Date -> Day -> Html Msg
-day today day =
-    H.div
-        [ HA.classList
-            [ ( "day", True )
-            , ( "today", today == day.date )
-            , ( "past", D.compare day.date today == LT )
-            , ( "no-plan", day.plan == Nothing )
-            ]
-        ]
-        [ H.div
-            [ HA.class "date" ]
-            [ H.text <| (D.day day.date |> toString) ++ ". " ++ (D.month day.date |> toString) ++ "." ]
-        , H.div
-            [ HA.class "plan" ]
-            [ day.plan
-                |> Maybe.map debug
-                |> Maybe.withDefault (H.text "no plan")
-            ]
         ]
 
 
