@@ -3,7 +3,7 @@ module View.Calendar exposing (calendar)
 import Calendar
 import Html as H exposing (Html)
 import Html.Attributes as HA
-import Time.Date as D exposing (Date)
+import Time.Date as D exposing (Date, Weekday(Sat, Sun))
 import Types exposing (..)
 
 
@@ -55,6 +55,7 @@ day today day =
             [ ( "day", True )
             , ( "today", today == day.date )
             , ( "past", D.compare day.date today == LT )
+            , ( "weekend", List.member (D.weekday day.date) [ Sat, Sun ] )
             , ( "no-plan", day.plan == Nothing )
             ]
         ]

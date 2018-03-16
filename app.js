@@ -5,8 +5,6 @@ function flags() {
   var persistentDataString = localStorage.getItem(key);
   var persistentData = persistentDataString == null ? null : JSON.parse(persistentDataString);
 
-  console.log('JS flags() persistentData', persistentData);
-
   var date = new Date();
 
   return {
@@ -20,11 +18,9 @@ function flags() {
 
 };
 
-
 var app = Elm.Main.fullscreen(flags());
 
 app.ports.save.subscribe(function(persistentData) {
-    console.log('JS save()', persistentData);
     var persistentDataString = JSON.stringify(persistentData);
     localStorage.setItem(key, persistentDataString);
 });

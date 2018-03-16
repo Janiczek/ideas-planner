@@ -53,6 +53,7 @@ button.remove-idea {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 0.5rem;
   background: #ffffff;
   border: 0.0625rem solid #d4d4d4;
@@ -107,6 +108,10 @@ button.remove-idea {
 .day.today {
   border-color: #fbd0b7;
   background: #fff5eb;
+}
+
+.day.weekend {
+  opacity: 0.55;
 }
 
 .date {
