@@ -39,8 +39,8 @@ input.new-idea {
   padding: 0.5rem;
   font-size: 1rem;
   flex: 1;
-  border: 0.0625rem solid #f8b087;
-  background: #fff5eb;
+  border: 0.125rem solid #e0e0e0;
+  background: #ffffff;
 }
 
 button.add-new-idea {
@@ -65,8 +65,8 @@ button.remove-idea {
   align-items: center;
   padding: 0.5rem;
   background: #ffffff;
-  border: 0.0625rem solid #d4d4d4;
-  box-shadow: 0 0.125rem 0.125rem #d4d4d4;
+  border-bottom: 0.0625rem solid #d4d4d4;
+  box-shadow: 0 0.0625rem 0.5rem #d4d4d4;
   border-radius: 0.125rem;
 }
 
@@ -120,7 +120,7 @@ button.remove-idea {
 }
 
 .day:hover {
-  box-shadow: 0 0.0625rem 0.5rem #cccccc;
+  box-shadow: 0 0.125rem 0.75rem #cccccc;
   z-index: 10;
 }
 

@@ -1,5 +1,6 @@
 module View.Ideas exposing (draggedIdea, ideas)
 
+import Color exposing (Color)
 import Dict exposing (Dict)
 import Dict.Extra as Dict
 import Html as H exposing (Html)
@@ -30,7 +31,9 @@ ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState, plans } as model)
                 ]
             , H.div
                 [ HA.class "ideas" ]
-                (ideas |> List.indexedMap (idea plans))
+                (ideas
+                    |> List.indexedMap (idea plans)
+                )
             ]
         , View.debug model
         ]
@@ -45,11 +48,26 @@ addNewIdeaButton =
         [ H.text "Add" ]
 
 
-idea : Dict DateTuple Idea -> Int -> Idea -> Html Msg
-idea plans index idea =
+idea : Dict DateTuple Idea -> Int -> ( Idea, Color ) -> Html Msg
+idea plans index ( idea, color ) =
+    let
+        { red, green, blue } =
+            Color.toRgb color
+    in
     H.div
         [ HA.class "idea"
         , HE.onMouseDown (DragIdea idea)
+        , HA.style
+            [ ( "background-color"
+              , "rgb("
+                    ++ toString red
+                    ++ ","
+                    ++ toString green
+                    ++ ","
+                    ++ toString blue
+                    ++ ")"
+              )
+            ]
         ]
         [ H.div
             [ HA.class "idea-content" ]

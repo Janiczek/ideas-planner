@@ -1,5 +1,6 @@
 module Types exposing (..)
 
+import Color exposing (Color)
 import Dict exposing (Dict)
 import Mouse exposing (Position)
 import Time.Date as D exposing (Date, Weekday(..))
@@ -14,23 +15,26 @@ type alias DateTuple =
 type alias Flags =
     { savedData : Maybe PersistentData
     , currentDate : DateTuple
+    , seedForColor : Int
     }
 
 
 type alias Model =
     { currentDate : Date
-    , ideas : List Idea
+    , ideas : List ( Idea, Color )
     , newIdeaInput : String
     , plans : Dict DateTuple Idea
     , dragState : DragState
     , currentlyHoveredDate : Maybe Date
     , mouse : Position
+    , lastColor : Color
     }
 
 
 type alias PersistentData =
-    { ideas : List Idea
+    { ideas : List { idea : Idea, rgbColor : ( Int, Int, Int ) }
     , plans : List ( DateTuple, Idea )
+    , lastColor : Maybe ( Int, Int, Int )
     }
 
 
