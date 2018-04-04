@@ -21,9 +21,9 @@ type alias Flags =
 
 type alias Model =
     { currentDate : Date
-    , ideas : List ( Idea, Color )
+    , ideas : List Idea
     , newIdeaInput : String
-    , plans : Dict DateTuple Idea
+    , plans : Dict DateTuple Plan
     , dragState : DragState
     , currentlyHoveredDate : Maybe Date
     , mouse : Position
@@ -32,8 +32,8 @@ type alias Model =
 
 
 type alias PersistentData =
-    { ideas : List { idea : Idea, rgbColor : ( Int, Int, Int ) }
-    , plans : List ( DateTuple, Idea )
+    { ideas : List Idea
+    , plans : List ( DateTuple, Plan )
     , lastColor : Maybe ( Int, Int, Int )
     }
 
@@ -41,12 +41,23 @@ type alias PersistentData =
 type DragState
     = NoDrag
     | DraggingIdea Idea
-    | DraggingPlan ( Date, Idea )
+    | DraggingPlan ( Date, Plan )
 
 
 type alias Day =
     { date : Date
-    , idea : Maybe Idea
+    , plan : Maybe Plan
+    }
+
+
+type alias Plan =
+    { idea : Idea
+    }
+
+
+type alias Idea =
+    { text : String
+    , rgbColor : ( Int, Int, Int )
     }
 
 
@@ -58,16 +69,12 @@ type alias Week =
     List Day
 
 
-type alias Idea =
-    String
-
-
 type Msg
     = SetNewIdeaInput String
     | AddNewIdea
     | RemoveIdea Int
     | DragIdea Idea
-    | DragPlan ( Date, Idea )
+    | DragPlan ( Date, Plan )
     | DragOverDay Date
     | DragLeaveDay
     | StopDrag

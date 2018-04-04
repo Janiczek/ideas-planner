@@ -10,9 +10,9 @@ fromModel model =
     { ideas =
         model.ideas
             |> List.map
-                (\( idea, color ) ->
-                    { idea = idea
-                    , rgbColor = Color.toTuple color
+                (\{ text, rgbColor } ->
+                    { text = text
+                    , rgbColor = rgbColor
                     }
                 )
     , plans = Dict.toList model.plans

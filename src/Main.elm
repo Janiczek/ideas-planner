@@ -1,9 +1,8 @@
 port module Main exposing (main)
 
-import Color
 import Color.Extra as Color
 import Dict
-import DistinctColors
+import DistinctColors.HSLuv as DistinctColors
 import Html as H
 import Mouse
 import PersistentData
@@ -46,27 +45,21 @@ init { currentDate, savedData, seedForColor } =
                     , lastColor = Nothing
                     }
 
-        ideasDict =
-            ideas
-                |> List.map
-                    (\{ idea, rgbColor } ->
-                        let
-                            ( red, green, blue ) =
-                                rgbColor
-                        in
-                        ( idea, Color.rgb red green blue )
-                    )
-
         plansDict =
             plans
                 |> Dict.fromList
 
         ( color, _ ) =
             Random.step
-                (DistinctColors.color { lightness = 0.9, saturation = 0.8 })
+                (DistinctColors.randomColor
+                    { lightness = 0.96
+                    , saturation = 1
+                    , alpha = 1
+                    }
+                )
                 (Random.initialSeed seedForColor)
     in
-    ( { ideas = ideasDict
+    ( { ideas = ideas
       , newIdeaInput = ""
       , plans = plansDict
       , currentDate = D.fromTuple currentDate
@@ -99,7 +92,11 @@ update msg model =
                         DistinctColors.nextColor model.lastColor
                 in
                 { model
-                    | ideas = ( model.newIdeaInput, newColor ) :: model.ideas
+                    | ideas =
+                        { text = model.newIdeaInput
+                        , rgbColor = Color.toTuple newColor
+                        }
+                            :: model.ideas
                     , newIdeaInput = ""
                     , lastColor = newColor
                 }
@@ -115,9 +112,9 @@ update msg model =
             }
                 |> save_
 
-        DragIdea idea ->
+        DragIdea ideaText ->
             ( { model
-                | dragState = DraggingIdea idea
+                | dragState = DraggingIdea ideaText
                 , currentlyHoveredDate = Nothing
               }
             , Cmd.none
@@ -157,7 +154,8 @@ update msg model =
                                 { modelWithoutDrag
                                     | plans =
                                         modelWithoutDrag.plans
-                                            |> Dict.insert (D.toTuple date) idea
+                                            |> Dict.insert (D.toTuple date)
+                                                { idea = idea }
                                 }
                             )
                         |> Maybe.withDefault modelWithoutDrag

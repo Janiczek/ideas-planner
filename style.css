@@ -115,47 +115,36 @@ button.remove-idea {
   transition: box-shadow 0.25s;
 }
 
-.day.no-plan .plan {
-  color: #888888;
-}
-
 .day:hover {
   box-shadow: 0 0.125rem 0.75rem #cccccc;
   z-index: 10;
 }
 
-.day:not(.no-plan) {
-  background: #d1ff82;
-}
-
 .day.past {
   color: #888888;
-  background: #ecffcc;
+  background: #f0f0f0 !important;
 }
 
-.day.past.no-plan {
-  background: #f0f0f0;
-}
-
-.day.today {
-  border-color: #fbd0b7;
-  background: #fff5eb;
+.day.past .plan {
   font-weight: bold;
 }
 
-.date {
+.day.past.no-plan .plan {
+  font-weight: normal;
 }
 
-.plan {
+.day.no-plan .plan {
+  color: #888888;
+}
+
+.day.today {
+  font-weight: bold;
 }
 
 .debug {
   display: grid;
   grid-gap: 1rem;
   padding-top: 1rem;
-}
-
-.debug-item {
 }
 
 .debug-label {

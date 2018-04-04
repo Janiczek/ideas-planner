@@ -8,7 +8,7 @@
     ],
     "exposed-modules": [],
     "dependencies": {
-        "Janiczek/distinct-colors": "2.2.0 <= v < 3.0.0",
+        "Janiczek/distinct-colors": "4.0.1 <= v < 5.0.0",
         "elm-community/dict-extra": "2.3.0 <= v < 3.0.0",
         "elm-community/elm-time": "2.0.0 <= v < 3.0.0",
         "elm-community/html-extra": "2.2.0 <= v < 3.0.0",
