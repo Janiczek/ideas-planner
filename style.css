@@ -39,8 +39,8 @@ input.new-idea {
   padding: 0.5rem;
   font-size: 1rem;
   flex: 1;
-  border: 0.0625rem solid #f8b087;
-  background: #fff5eb;
+  border: 0.125rem solid #e0e0e0;
+  background: #ffffff;
 }
 
 button.add-new-idea {
@@ -65,8 +65,8 @@ button.remove-idea {
   align-items: center;
   padding: 0.5rem;
   background: #ffffff;
-  border: 0.0625rem solid #d4d4d4;
-  box-shadow: 0 0.125rem 0.125rem #d4d4d4;
+  border-bottom: 0.0625rem solid #d4d4d4;
+  box-shadow: 0 0.0625rem 0.5rem #d4d4d4;
   border-radius: 0.125rem;
 }
 
@@ -115,47 +115,36 @@ button.remove-idea {
   transition: box-shadow 0.25s;
 }
 
-.day.no-plan .plan {
-  color: #888888;
-}
-
 .day:hover {
-  box-shadow: 0 0.0625rem 0.5rem #cccccc;
+  box-shadow: 0 0.125rem 0.75rem #cccccc;
   z-index: 10;
-}
-
-.day:not(.no-plan) {
-  background: #d1ff82;
 }
 
 .day.past {
   color: #888888;
-  background: #ecffcc;
+  background: #f0f0f0 !important;
 }
 
-.day.past.no-plan {
-  background: #f0f0f0;
-}
-
-.day.today {
-  border-color: #fbd0b7;
-  background: #fff5eb;
+.day.past .plan {
   font-weight: bold;
 }
 
-.date {
+.day.past.no-plan .plan {
+  font-weight: normal;
 }
 
-.plan {
+.day.no-plan .plan {
+  color: #888888;
+}
+
+.day.today {
+  font-weight: bold;
 }
 
 .debug {
   display: grid;
   grid-gap: 1rem;
   padding-top: 1rem;
-}
-
-.debug-item {
 }
 
 .debug-label {

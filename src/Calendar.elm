@@ -32,12 +32,12 @@ currentDates currentDate =
         sundayFourWeeksFromLastMonday
 
 
-withPlans : Dict DateTuple Idea -> List Date -> List Day
+withPlans : Dict DateTuple Plan -> List Date -> List Day
 withPlans plans dates =
     dates
         |> List.map
             (\date ->
                 { date = date
-                , idea = Dict.get (D.toTuple date) plans
+                , plan = Dict.get (D.toTuple date) plans
                 }
             )

@@ -54,15 +54,34 @@ day today dragState day =
     let
         isToday =
             today == day.date
+
+        color =
+            day.plan
+                |> Maybe.map .idea
+                |> Maybe.map .rgbColor
+
+        maybeBgColor =
+            color
+                |> Maybe.map
+                    (\( r, g, b ) ->
+                        [ HA.style
+                            [ ( "background-color"
+                              , "rgb(" ++ toString r ++ "," ++ toString g ++ "," ++ toString b ++ ")"
+                              )
+                            ]
+                        ]
+                    )
+                |> Maybe.withDefault []
     in
     H.div
         ([ HA.classList
             [ ( "day", True )
             , ( "today", isToday )
             , ( "past", D.compare day.date today == LT )
-            , ( "no-plan", day.idea == Nothing )
+            , ( "no-plan", day.plan == Nothing )
             ]
          ]
+            ++ maybeBgColor
             ++ enableDragPlan day
             ++ enableDragEnd day dragState
         )
@@ -81,7 +100,9 @@ day today dragState day =
             ]
         , H.div
             [ HA.class "plan" ]
-            [ day.idea
+            [ day.plan
+                |> Maybe.map .idea
+                |> Maybe.map .text
                 |> Maybe.withDefault "no plan"
                 |> H.text
             ]
@@ -90,10 +111,10 @@ day today dragState day =
 
 enableDragPlan : Day -> List (H.Attribute Msg)
 enableDragPlan day =
-    day.idea
+    day.plan
         |> Maybe.map
-            (\idea ->
-                [ HE.onMouseDown (DragPlan ( day.date, idea )) ]
+            (\plan ->
+                [ HE.onMouseDown (DragPlan ( day.date, plan )) ]
             )
         |> Maybe.withDefault []
 

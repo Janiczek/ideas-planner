@@ -1,5 +1,6 @@
 module View.Ideas exposing (draggedIdea, ideas)
 
+import Color exposing (Color)
 import Dict exposing (Dict)
 import Dict.Extra as Dict
 import Html as H exposing (Html)
@@ -30,7 +31,9 @@ ideas ({ ideas, newIdeaInput, currentlyHoveredDate, dragState, plans } as model)
                 ]
             , H.div
                 [ HA.class "ideas" ]
-                (ideas |> List.indexedMap (idea plans))
+                (ideas
+                    |> List.indexedMap (idea plans)
+                )
             ]
         , View.debug model
         ]
@@ -45,33 +48,52 @@ addNewIdeaButton =
         [ H.text "Add" ]
 
 
-idea : Dict DateTuple Idea -> Int -> Idea -> Html Msg
-idea plans index idea =
+idea : Dict DateTuple Plan -> Int -> Idea -> Html Msg
+idea plans index ({ text, rgbColor } as idea) =
+    let
+        ( red, green, blue ) =
+            rgbColor
+    in
     H.div
         [ HA.class "idea"
         , HE.onMouseDown (DragIdea idea)
+        , HA.style
+            [ ( "background-color"
+              , "rgb("
+                    ++ toString red
+                    ++ ","
+                    ++ toString green
+                    ++ ","
+                    ++ toString blue
+                    ++ ")"
+              )
+            ]
         ]
         [ H.div
             [ HA.class "idea-content" ]
-            [ H.div [ HA.class "idea-text" ] [ H.text idea ]
+            [ H.div
+                [ HA.class "idea-text" ]
+                [ H.text text ]
             , H.div
                 [ HA.class "idea-frequency"
                 , HA.title "The dots mean: How much do you neglect this idea?"
                 ]
-                [ frequency plans idea ]
+                [ frequency plans text ]
             ]
         , removeIdeaButton index
         ]
 
 
-frequency : Dict DateTuple Idea -> Idea -> Html Msg
-frequency plans idea =
+frequency : Dict DateTuple Plan -> String -> Html Msg
+frequency plans ideaText =
     let
-        frequencies : Dict Idea Int
+        frequencies : Dict String Int
         frequencies =
             plans
                 |> Dict.toList
                 |> List.map Tuple.second
+                |> List.map .idea
+                |> List.map .text
                 |> Dict.frequencies
 
         biggestFrequency : Int
@@ -84,7 +106,7 @@ frequency plans idea =
         thisFrequency : Int
         thisFrequency =
             frequencies
-                |> Dict.get idea
+                |> Dict.get ideaText
                 |> Maybe.withDefault 0
 
         difference : Int
@@ -115,7 +137,7 @@ draggedIdea { dragState, mouse } =
                 ]
                 [ H.div
                     [ HA.class "idea-content" ]
-                    [ H.text idea ]
+                    [ H.text idea.text ]
                 ]
     in
     case dragState of
@@ -125,8 +147,8 @@ draggedIdea { dragState, mouse } =
         DraggingIdea idea ->
             view idea
 
-        DraggingPlan ( date, idea ) ->
-            view idea
+        DraggingPlan ( date, plan ) ->
+            view plan.idea
 
 
 removeIdeaButton : Int -> Html Msg
