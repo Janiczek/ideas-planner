@@ -1,6 +1,5 @@
 module View.Ideas exposing (draggedIdea, ideas)
 
-import Color exposing (Color)
 import Dict exposing (Dict)
 import Dict.Extra as Dict
 import Html as H exposing (Html)
